@@ -2,8 +2,6 @@ import {Component, OnInit} from '@angular/core';
 import {FianzasService} from "../../services/fianzas.service";
 import {ResponseAPI} from "../../models/responseAPI";
 import {Fianza} from "../../models/fianza";
-import {Monedas} from "../../models/enums/monedas";
-import {InfoCard} from "../../models/info-card";
 
 @Component({
   selector: 'app-home',
