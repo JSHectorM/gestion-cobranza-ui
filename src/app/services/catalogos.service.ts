@@ -1,8 +1,6 @@
 import { Injectable } from '@angular/core';
 import {HttpClient} from "@angular/common/http";
 import {catchError, map, Observable, of} from "rxjs";
-import {ResponseAPI} from "../models/responseAPI";
-
 @Injectable({
   providedIn: 'root'
 })
@@ -12,7 +10,7 @@ export class CatalogosService {
   constructor( private http: HttpClient ) { }
 
   getcatalogoOficinas():Observable<any>{
-    return this.http.get('http://localhost:8080/oficina/all')
+    return this.http.get(`${this.host}/oficina/all`)
       .pipe( map( resp =>resp ), catchError( err => of(err) ));
   }
 
