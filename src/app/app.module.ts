@@ -16,6 +16,9 @@ import {MatPaginatorModule} from "@angular/material/paginator";
 import {HttpClientModule} from "@angular/common/http";
 import {FormsModule} from "@angular/forms";
 import {NgOptimizedImage} from "@angular/common";
+import { MatPaginatorIntl } from '@angular/material/paginator';
+import {CustomMatPaginatorIntl} from "./components/table-fianzas/custom-mat-paginator-intl";
+
 
 @NgModule({
   declarations: [
@@ -38,7 +41,7 @@ import {NgOptimizedImage} from "@angular/common";
         FormsModule,
         NgOptimizedImage
     ],
-  providers: [],
+  providers: [{ provide: MatPaginatorIntl, useClass: CustomMatPaginatorIntl }],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
