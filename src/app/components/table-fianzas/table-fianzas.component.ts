@@ -1,146 +1,69 @@
-import {Component, ViewChild} from '@angular/core';
+import {Component, Input, OnChanges, OnInit, SimpleChanges, ViewChild} from '@angular/core';
 import {MatTableDataSource} from "@angular/material/table";
 import {MatPaginator} from "@angular/material/paginator";
 import {MatSort} from "@angular/material/sort";
+import {Fianza} from "../../models/fianza";
+import {FianzaRowTable} from "../../models/fianza-row-table";
+import {RangosFianza} from "../../models/enums/rangos-fianza";
 
 @Component({
   selector: 'app-table-fianzas',
   templateUrl: './table-fianzas.component.html',
   styleUrls: ['./table-fianzas.component.scss']
 })
-export class TableFianzasComponent {
-  // @ViewChild('funcionariosSort') sort = new MatSort();
-  // @ViewChild('paginator') paginator!: MatPaginator;
-  //
-  // bloqueados: boolean = false;
-  // displayedColumns: string[] = [ 'rfc','name', 'area','roles', 'estatus'];
-  // dataSource!: MatTableDataSource<any>;
-  //
-  // areas: Areas[] = [];
-  //
-  //
-  // constructor(
-  //   public dialog: MatDialog, private http: HttpClient,
-  //   public funcionariosService: FuncionariosService,
-  //   private areasService: AreasService,
-  //   private snackBar: SnackBarService
-  // ) {
-  //   this.dataSource = new MatTableDataSource<Funcionario>();
-  // }
-  //
-  // ngOnInit(): void {
-  //
-  //
-  //   this.areasService.getAreas().subscribe(data => {
-  //
-  //     this.areas  = this.areasDisponibles(data.areaList);
-  //     this.getFuncionarios();
-  //
-  //   },error =>  {
-  //     this.snackBar.error('Error en conseguir áreas, por favor vuelva a cargar la página.');
-  //   });
-  //
-  // }
-  //
-  // ngAfterViewInit() {}
-  //
-  // getFuncionarios(){
-  //   this.funcionariosService.getAllFuncionarios().subscribe({
-  //     next: (data) => {
-  //       data.responseApi.forEach((funcionario: Funcionario) => this.areas.forEach((area: Areas) => {
-  //         if (area.idArea == funcionario.idArea) {
-  //           funcionario.area = area.name
-  //         }
-  //       }));
-  //
-  //       this.dataSource = new MatTableDataSource<Funcionario>(data.responseApi);
-  //       this.dataSource.sort = this.sort;
-  //       this.dataSource.paginator = this.paginator;
-  //
-  //     }, error: (error) => {
-  //       if (error.status !== 404) {
-  //         this.snackBar.error('Error en conseguir funcionarios, por favor vuelva a cargar la página.');
-  //       } else {
-  //         this.dataSource.data = [];
-  //         this.dataSource.sort = this.sort;
-  //         this.dataSource.paginator = this.paginator;
-  //       }
-  //     }
-  //   });
-  // }
-  //
-  // areasDisponibles(lista: Areas[]): Areas[]{
-  //   let nuevaLista: Areas[] = []
-  //
-  //   lista.forEach((value)=> {
-  //     if(value.activo == true){
-  //       nuevaLista.push(value)
-  //     }
-  //   })
-  //
-  //   return nuevaLista;
-  // }
-  //
-  // // Dialog (popup) para editar los roles del funcionario
-  // openRolesDialog(func: Funcionario): void {
-  //   const dialogRef = this.dialog.open(AsignarRolesComponent, {
-  //     // panelClass: 'bloquear',
-  //     width: 'max-content',
-  //     data:  func,
-  //     disableClose: true
-  //   });
-  //
-  //   dialogRef.afterClosed().subscribe(result => {
-  //     // Obtenemos los roles como resultado de cerrar el dialog
-  //     this.getFuncionarios();
-  //
-  //   });
-  // }
-  //
-  // applyFilter(event: Event) {
-  //
-  //   this.dataSource.filterPredicate = function (record,filter) {
-  //     let findByRol;
-  //
-  //     try {
-  //       findByRol = record.usuario.roles.find((i:any) => {
-  //         if (i.nombre.toLocaleLowerCase().includes(filter)){
-  //           return i;
-  //         }
-  //       })
-  //     } finally {
-  //       if (findByRol !== undefined) {
-  //         return true;
-  //       } else {
-  //         if (record.area.toLocaleLowerCase().includes(filter) ) {
-  //           return true
-  //         } else {
-  //           if (record.nombre.toLocaleLowerCase().includes(filter)) {
-  //             return true
-  //           } else {
-  //             if (record.rfc.toLocaleLowerCase().includes(filter)) {
-  //               return true
-  //             }
-  //           }
-  //         }
-  //         return false;
-  //       }
-  //     }
-  //   }
-  //
-  //   const filterValue = (event.target as HTMLInputElement).value;
-  //   this.dataSource.filter = filterValue.trim().toLowerCase();
-  //
-  //   if (this.dataSource.paginator) {
-  //     this.dataSource.paginator.firstPage();
-  //   }
-  // }
-  //
-  // clearFilter(input: HTMLInputElement) {
-  //   input.value = '';
-  //   this.dataSource.filter = '';
-  //   if (this.dataSource.paginator) {
-  //     this.dataSource.paginator.firstPage();
-  //   }
-  // }
+export class TableFianzasComponent implements OnInit, OnChanges{
+
+  @Input() fianzasInfoCards: Fianza[] = [];
+
+  @ViewChild('tableSort') sort = new MatSort();
+  @ViewChild('paginator') paginator!: MatPaginator;
+
+  displayedColumns: string[] = [ 'fianza', 'movimiento', 'fiado', 'antiguedad', 'diasVencidos', 'importe']
+  dataSource!: MatTableDataSource<FianzaRowTable>;
+
+  RangosFianza = RangosFianza;
+  ngOnInit(): void {
+    this.dataSource = new MatTableDataSource<FianzaRowTable>([]);
+    this.dataSource.sort = this.sort;
+    this.dataSource.paginator = this.paginator;
+  }
+
+  ngOnChanges(changes: SimpleChanges): void {
+    if ( changes['fianzasInfoCards'] ) {
+      if( changes['fianzasInfoCards'].currentValue !== undefined){
+        // console.log(changes['fianzasInfoCards'].currentValue)
+        this.createInfoTable(changes['fianzasInfoCards'].currentValue);
+      }
+    }
+  }
+
+  createInfoTable( fianzas: Fianza[] ){
+    let fianzasTable: FianzaRowTable[] = [];
+
+    fianzas.forEach((fianza: Fianza) => {
+      const diasAntiguedad = this.calcularFechas(fianza.fecha_movimiento);
+      const diasVencidos = this.calcularFechas(fianza.fecha_limite);
+      fianzasTable.push({
+        fianza: fianza.fianza,
+        movimiento: fianza.movimiento,
+        fiado: fianza.fiado,
+        antiguedad: diasAntiguedad.toString(),
+        diasVencidos: diasVencidos > 0 ? diasVencidos.toString() : '0',
+        importe: fianza.importe
+      })
+    })
+    this.dataSource = new MatTableDataSource<FianzaRowTable>(fianzasTable);
+    this.dataSource.sort = this.sort;
+    this.dataSource.paginator = this.paginator;
+  }
+  calcularFechas(fecha: string) {
+    // Se convierte la fecha límite proporcionada como cadena en un valor de tiempo (timestamp) en milisegundos.
+    const fechaLimiteTimestamp = new Date(fecha).getTime();
+    // Se obtiene la fecha actual y se la convierte también en un valor de tiempo en milisegundos.
+    const fechaActualTimestamp = new Date().getTime();
+    // Se calcula la diferencia en milisegundos entre la fecha actual y la fecha límite,
+    // se divide por la cantidad de milisegundos en un día para obtener la diferencia en días,
+    // y se redondea hacia abajo al número entero más cercano.
+    return Math.floor((fechaActualTimestamp - fechaLimiteTimestamp) / (1000 * 60 * 60 * 24));
+  }
 }

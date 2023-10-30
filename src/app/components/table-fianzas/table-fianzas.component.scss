@@ -1,0 +1,33 @@
+$color-red: #ff595e;
+$color-yellow: #ffca3a;
+$color-green: #8ac926;
+$color-gray: #E4E4E4;
+
+.table-responsive {
+  table {
+    border: solid 1px $color-gray;
+    tr{
+      td{
+        border: solid 1px $color-gray;
+      }
+    }
+  }
+  ::ng-deep .mat-mdc-text-field-wrapper {
+    width: 90px !important;
+  }
+  .color-bg-red{
+    background-color: $color-red !important;
+    border: solid 2px white !important;
+    color: white;
+  }
+  .color-bg-yellow{
+    background-color: $color-yellow !important;
+    border: solid 2px white !important;
+    color: white;
+  }
+  .color-bg-green{
+    background-color: $color-green !important;
+    border: solid 2px white !important;
+    color: white;
+  }
+}

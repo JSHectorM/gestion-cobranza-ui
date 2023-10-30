@@ -1,57 +1,60 @@
-<div class="row">
-  Tabla de ...
-<!--  <div class="col-12 table-responsive">-->
+<div class="row mt-2">
+  <div class="col-12 table-responsive">
+    <table mat-table [dataSource]="dataSource" matSort #tableSort="matSort" class="table-striped table-hover">
+      <tr>
+        <ng-container matColumnDef="fianza">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header> Fianza </th>
+          <td mat-cell *matCellDef="let element">{{element.fianza}}</td>
+        </ng-container>
 
-<!--    <table mat-table [dataSource]="dataSource" matSort #funcionariosSort="matSort" class="table-striped table-hover">-->
+        <ng-container matColumnDef="movimiento">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header> Movimiento </th>
+          <td mat-cell *matCellDef="let element">{{element.movimiento}}</td>
+        </ng-container>
 
-<!--      <tr>-->
-<!--        &lt;!&ndash; RFC Column &ndash;&gt;-->
-<!--        <ng-container matColumnDef="rfc">-->
-<!--          <th mat-header-cell *matHeaderCellDef mat-sort-header> RFC </th>-->
-<!--          <td mat-cell *matCellDef="let element"> <h3>{{element.rfc}}</h3> </td>-->
-<!--        </ng-container>-->
+        <ng-container matColumnDef="fiado">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header> Fiado </th>
+          <td mat-cell *matCellDef="let element">{{element.fiado}}</td>
+        </ng-container>
 
-<!--        &lt;!&ndash; Name Column &ndash;&gt;-->
-<!--        <ng-container matColumnDef="name">-->
-<!--          <th mat-header-cell *matHeaderCellDef mat-sort-header> Nombre funcionario </th>-->
-<!--          <td mat-cell *matCellDef="let element"> <h3>{{element.nombre}}</h3> </td>-->
-<!--        </ng-container>-->
+        <ng-container matColumnDef="antiguedad">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header> Antig&uuml;edad </th>
+          <td mat-cell
+              [ngClass]="{'color-bg-green': element.diasVencidos >= RangosFianza.INICIO_VERDE && element.diasVencidos < RangosFianza.INICIO_AMARILLO,
+                          'color-bg-yellow': element.diasVencidos >= RangosFianza.INICIO_AMARILLO && element.diasVencidos < RangosFianza.INICIO_ROJO,
+                          'color-bg-red': element.diasVencidos >= RangosFianza.INICIO_ROJO}"
+              *matCellDef="let element">{{element.antiguedad}}</td>
+        </ng-container>
 
-<!--        &lt;!&ndash; Area Column &ndash;&gt;-->
-<!--        <ng-container matColumnDef="area">-->
-<!--          <th mat-header-cell *matHeaderCellDef mat-sort-header>Área  </th>-->
-<!--          <td mat-cell *matCellDef="let element"> <h3>{{element.area}}</h3> </td>-->
-<!--        </ng-container>-->
+        <ng-container matColumnDef="diasVencidos">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header> Dias de vencimiento </th>
+          <td mat-cell
+              [ngClass]="{'color-bg-green': element.diasVencidos >= RangosFianza.INICIO_VERDE && element.diasVencidos < RangosFianza.INICIO_AMARILLO,
+                          'color-bg-yellow': element.diasVencidos >= RangosFianza.INICIO_AMARILLO && element.diasVencidos < RangosFianza.INICIO_ROJO,
+                          'color-bg-red': element.diasVencidos >= RangosFianza.INICIO_ROJO}"
+              *matCellDef="let element">{{element.diasVencidos}}</td>
+        </ng-container>
 
-<!--        &lt;!&ndash; roles Column &ndash;&gt;-->
-<!--        <ng-container matColumnDef="roles">-->
-<!--          <th mat-header-cell *matHeaderCellDef mat-sort-header> Roles </th>-->
-<!--          <td mat-cell *matCellDef="let element">-->
-<!--            <ng-container *ngFor="let rol of element.usuario.roles">-->
-<!--              &lt;!&ndash; <h3 *ngIf="funcionariosService.isRolInThisPortal(rol.nombre)">{{ rol.nombre }}</h3> &ndash;&gt;-->
-<!--            </ng-container>-->
-<!--          </td>-->
-<!--        </ng-container>-->
-
-<!--        <ng-container matColumnDef="estatus">-->
-<!--          <th mat-header-cell *matHeaderCellDef> Acciones </th>-->
-
-<!--          <td mat-cell *matCellDef="let element" >-->
-<!--            Icono-->
-<!--          </td>-->
-<!--        </ng-container>-->
-
-
-<!--      </tr>-->
-<!--      <tr class="mat-row" *matNoDataRow>-->
-<!--        <td class="mat-cell text-center" [attr.colspan]="displayedColumns.length">-->
-<!--          No hay funcionarios para mostrar.-->
-<!--        </td>-->
-<!--      </tr>-->
-
-<!--      <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>-->
-<!--      <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>-->
-<!--    </table>-->
-<!--    <mat-paginator #paginator [pageSizeOptions]="[5, 10, 25, 100]" aria-label="Selecciona el tamaño de la página"></mat-paginator>-->
-<!--  </div>-->
+        <ng-container matColumnDef="importe">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header> Importe </th>
+          <td mat-cell
+              [ngClass]="{'color-bg-green': element.diasVencidos >= RangosFianza.INICIO_VERDE && element.diasVencidos < RangosFianza.INICIO_AMARILLO,
+                          'color-bg-yellow': element.diasVencidos >= RangosFianza.INICIO_AMARILLO && element.diasVencidos < RangosFianza.INICIO_ROJO,
+                          'color-bg-red': element.diasVencidos >= RangosFianza.INICIO_ROJO}"
+              *matCellDef="let element">{{element.importe | currency}}</td>
+        </ng-container>
+      </tr>
+      <tr class="mat-row" *matNoDataRow>
+        <td class="mat-cell text-center" [attr.colspan]="displayedColumns.length">
+          No hay fianzas que mostrar
+        </td>
+      </tr>
+      <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+      <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+    </table>
+    <mat-paginator #paginator
+                   [pageSizeOptions]="[5, 10, 25, 100]"
+                   aria-label="Selecciona el tamaño de la página">
+    </mat-paginator>
+  </div>
 </div>
