@@ -3,6 +3,7 @@ import {CatalogosService} from "../../services/catalogos.service";
 import {Oficina} from "../../models/oficina";
 import {ResponseAPI} from "../../models/responseAPI";
 import {FianzasService} from "../../services/fianzas.service";
+import {MatSnackBar} from "@angular/material/snack-bar";
 
 @Component({
   selector: 'app-filters',
@@ -22,7 +23,8 @@ export class FiltersComponent implements OnInit {
   @ViewChild('fileInput') fileInput!: ElementRef;
 
   constructor(private catalogosService: CatalogosService,
-              private fianzasService: FianzasService) {
+              private fianzasService: FianzasService,
+              private _snackBar: MatSnackBar) {
   }
 
   ngOnInit(): void {
@@ -32,7 +34,10 @@ export class FiltersComponent implements OnInit {
   getOficinas() {
     this.catalogosService.getcatalogoOficinas()
       .subscribe({
-        error: error => console.error('Error!', error),
+        error: error => {
+          console.error('Error!', error);
+          this.openSnackBar('Ocurrio un error al cargar las oficinas')
+        },
         next: (response: ResponseAPI) => {
           this.catOfcinas = response.data;
           this.selectedOficina = 14;
@@ -58,11 +63,13 @@ export class FiltersComponent implements OnInit {
 
   uploadFile() {
     console.log('uploadFile');
+    this.openSnackBar('Cargando archivo...');
     this.fianzasService.uploadXLSX(this.docFile, this.selectedOficina.toString())
       .subscribe(r => {
         console.log(r)
         if (r.code === '200 OK'){
           console.log('Se cargo el archivo correctamente');
+          this.openSnackBar('Se cargo el archivo correctamente');
           this.flagFile = false;
           this.nameFile = '';
           this.docFile = new File([], '');
@@ -82,5 +89,11 @@ export class FiltersComponent implements OnInit {
     this.docFile = new File([], '');
   }
 
+  openSnackBar(message: string) {
+    this._snackBar.open(message, 'X', {
+      horizontalPosition: 'end',
+      verticalPosition: 'top',
+    });
+  }
 
 }

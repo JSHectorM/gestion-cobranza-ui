@@ -20,6 +20,7 @@ import { MatPaginatorIntl } from '@angular/material/paginator';
 import {CustomMatPaginatorIntl} from "./components/table-fianzas/custom-mat-paginator-intl";
 import {MatButtonModule} from "@angular/material/button";
 import {MatIconModule} from "@angular/material/icon";
+import {MatSnackBarModule} from "@angular/material/snack-bar";
 
 
 @NgModule({
@@ -43,7 +44,8 @@ import {MatIconModule} from "@angular/material/icon";
     FormsModule,
     NgOptimizedImage,
     MatButtonModule,
-    MatIconModule
+    MatIconModule,
+    MatSnackBarModule
   ],
   providers: [{ provide: MatPaginatorIntl, useClass: CustomMatPaginatorIntl }],
   bootstrap: [AppComponent]
