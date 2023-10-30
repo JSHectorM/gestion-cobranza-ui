@@ -28,4 +28,28 @@
       </mat-select>
     </mat-form-field>
   </div>
+  <div class="col-md-3 col-sm-12" [ngClass]="{'d-none': flagFile}">
+    <input id="file" class="file-inp"
+           #fileInput
+           type="file" placeholder="File"
+           (change)="onFileSelected($event)"
+           accept=".xlsx">
+  </div>
+  <div class="col-md-3 col-sm-12" [ngClass]="{'d-none': !flagFile}">
+    <div class="input-group">
+      <input type="text" readonly
+             class="form-control inp-file"
+             [value]="nameFile"
+             placeholder="...">
+      <div class="input-group-append">
+        <button class="btn btn-file"
+                (click)="uploadFile()"
+                type="button"
+                id="boton-addon">Enviar</button>
+        <button class="btn btn-cancel mx-1"
+                (click)="cancelUpload()"
+                type="button">X</button>
+      </div>
+    </div>
+  </div>
 </div>
