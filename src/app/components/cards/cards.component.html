@@ -1,12 +1,25 @@
 <div class="row row-cols-1 row-cols-md-3 g-4">
-  <div class="col">
-    <div class="card">
+  <div class="col" *ngFor="let card of infoCards">
+    <div class="card border-warning">
       <div class="card-body">
-        <h2 class="card-title">Card title</h2>
-        <p class="card-text">This is a longer card with supporting text below as a natural lead-in to additional content. This content is a little bit longer.</p>
+        <h2 class="card-title">{{card.tipoMoneda}}</h2>
+        <p class="card-text text-center h3">{{card.cantidadTotal | currency}}</p>
       </div>
-      <div class="card-footer">
-        <small class="text-body-secondary">Last updated 3 mins ago</small>
+      <div class="card-footer bg-transparent d-md-flex">
+        <div class="flex-md-fill onTime">
+          <p class="h5 text-center">
+            <img class="iconCard" src="assets/icons/check.svg" alt="check-green">
+            {{card.porcentajeEnTiempo | number: '1.2-2'}}%
+          </p>
+          <p class="h5 text-center">{{card.totalEnTiempo | currency}}</p>
+        </div>
+        <div class="flex-fill delayed">
+          <p class="h5 text-center">
+            <img class="iconCard" src="assets/icons/atencion.svg" alt="check-green">
+            {{card.porsentajeVencido | number: '1.2-2'}}%
+          </p>
+          <p class="h5 text-center">{{card.totalVencido | currency}}</p>
+        </div>
       </div>
     </div>
   </div>
