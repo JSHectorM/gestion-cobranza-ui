@@ -1,0 +1,36 @@
+input[type=file]::file-selector-button {
+  margin-right: 20px;
+  border: none;
+  background: #673AB7;
+  padding: 18px 20px;
+  border-radius: 10px;
+  color: #fff;
+  cursor: pointer;
+  transition: background .2s ease-in-out;
+}
+
+input[type=file]::file-selector-button:hover {
+  background: #0d45a5;
+}
+
+.inp-file{
+  border: none;
+  padding: 18px 20px;
+  border-radius: 10px;
+  cursor: pointer;
+  transition: background .2s ease-in-out;
+  outline: none;
+  box-shadow: none;
+}
+.btn-file{
+  background: #673AB7;
+  padding: 18px 20px;
+  color: #fff;
+  transition: background .2s ease-in-out;
+}
+.btn-cancel{
+  background: #0d45a5;
+  padding: 18px 20px;
+  color: #fff;
+  transition: background .2s ease-in-out;
+}
