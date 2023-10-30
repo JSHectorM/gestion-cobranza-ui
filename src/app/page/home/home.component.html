@@ -5,10 +5,10 @@
   </header>
   <!-- Contenido de la página -->
   <section class="filtros">
-    <app-filters></app-filters>
+    <app-filters (filterOficina)="changeFilter($event)" ></app-filters>
   </section>
   <section class="cards">
-    <app-cards></app-cards>
+    <app-cards [fianzasInfoCards]="fianzas" ></app-cards>
   </section>
   <section class="table">
     <app-table-fianzas></app-table-fianzas>

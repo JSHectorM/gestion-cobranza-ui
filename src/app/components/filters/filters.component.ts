@@ -1,4 +1,4 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
 import {CatalogosService} from "../../services/catalogos.service";
 import {Oficina} from "../../models/oficina";
 import {ResponseAPI} from "../../models/responseAPI";
@@ -12,6 +12,7 @@ export class FiltersComponent implements OnInit{
 
   catOfcinas: Oficina[] = [];
   selectedOficina !: number ;
+  @Output() filterOficina = new EventEmitter<number>();
   constructor( private catalogosService : CatalogosService ) { }
 
   ngOnInit(): void {
@@ -24,10 +25,13 @@ export class FiltersComponent implements OnInit{
           next: (response: ResponseAPI) => {
             this.catOfcinas = response.data;
             this.selectedOficina = 14;
+            this.filterOficina.emit(this.selectedOficina);
             // console.log(this.catOfcinas);
           }
         });
   }
 
-
+    changeOfcina( ){
+        this.filterOficina.emit(this.selectedOficina);
+    }
 }
