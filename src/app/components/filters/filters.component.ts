@@ -4,6 +4,7 @@ import {Oficina} from "../../models/oficina";
 import {ResponseAPI} from "../../models/responseAPI";
 import {FianzasService} from "../../services/fianzas.service";
 import {MatSnackBar} from "@angular/material/snack-bar";
+import {catchError, of} from "rxjs";
 
 @Component({
   selector: 'app-filters',
@@ -33,16 +34,21 @@ export class FiltersComponent implements OnInit {
 
   getOficinas() {
     this.catalogosService.getcatalogoOficinas()
-      .subscribe({
-        error: error => {
+      .pipe(
+        catchError((error) => {
           console.error('Error!', error);
-          this.openSnackBar('Ocurrio un error al cargar las oficinas')
-        },
-        next: (response: ResponseAPI) => {
+          this.openSnackBar('Ocurrió un error al cargar las oficinas');
+          return of([]);
+        })
+      )
+      .subscribe((response: ResponseAPI) => {
+        if (response.code.includes("200")) {
           this.catOfcinas = response.data;
           this.selectedOficina = 14;
           this.filterOficina.emit(this.selectedOficina);
-          // console.log(this.catOfcinas);
+        } else {
+          console.error('Respuesta inesperada:', response);
+          this.openSnackBar('Ocurrió un error inesperado al cargar las oficinas');
         }
       });
   }

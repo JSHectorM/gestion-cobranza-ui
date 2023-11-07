@@ -3,6 +3,7 @@ import {FianzasService} from "../../services/fianzas.service";
 import {ResponseAPI} from "../../models/responseAPI";
 import {Fianza} from "../../models/fianza";
 import {MatSnackBar} from "@angular/material/snack-bar";
+import {catchError, of} from "rxjs";
 
 @Component({
   selector: 'app-home',
@@ -18,16 +19,22 @@ export class HomeComponent implements OnInit{
   ngOnInit(): void {
   }
 
-  getFianzasByOficina(idOficina: number){
+  getFianzasByOficina(idOficina: number) {
     this.fianzasService.getFianzasByOficina(idOficina)
-      .subscribe({
-        error: error => {
+      .pipe(
+        catchError((error) => {
           console.error('Error!', error);
-          this.openSnackBar('Ocurrio un error al cargar las fianzas');
-        },
-        next: (response: ResponseAPI) => {
+          this.openSnackBar('Ocurrió un error al cargar las fianzas');
+          return of([]);
+        })
+      )
+      .subscribe((response: ResponseAPI) => {
+        if (response.code.includes("200")) {
           this.fianzas = response.data;
           this.openSnackBar('Se cargaron las fianzas correctamente');
+        } else {
+          console.error('Respuesta inesperada:', response);
+          this.openSnackBar('Ocurrió un error inesperado al cargar las fianzas');
         }
       });
   }
