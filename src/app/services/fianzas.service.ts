@@ -1,17 +1,16 @@
 import { Injectable } from '@angular/core';
 import {HttpClient, HttpHeaders} from "@angular/common/http";
 import {catchError, map, Observable, of} from "rxjs";
-
+import {environment} from "../../environments/environment";
 @Injectable({
   providedIn: 'root'
 })
 export class FianzasService {
-  host: String = 'http://localhost:8080';
 
   constructor( private http: HttpClient ) {}
 
   getFianzasByOficina(idOficina: number):Observable<any>{
-    return this.http.get(`${this.host}/fianzas/buscar/${idOficina}`)
+    return this.http.get(`${environment.apiHost}/fianzas/buscar/${idOficina}`)
       .pipe( map( resp =>resp ), catchError( err => of(err) ));
   }
 
@@ -20,7 +19,7 @@ export class FianzasService {
     const formData: FormData = new FormData();
     formData.append('file', file);
     return this.http.post<any>(
-      `${this.host}/fianzas/uploadExcelFile/${idOficina}`, formData,
+      `${environment.apiHost}/fianzas/uploadExcelFile/${idOficina}`, formData,
       { 'headers': headers }).pipe(catchError(err => of(err)));
   }
 
